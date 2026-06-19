@@ -7,6 +7,8 @@ CC = avr-gcc
 OBJCOPY = avr-objcopy
 AVRDUDE = avrdude
 
+SRC = main.c uart.c
+
 # prepinace pro kompilator:
 ## zapnuti varovani
 ## optimalizace velikosti (-Os)
@@ -15,8 +17,8 @@ CFLAGS = -Wall -Os -DF_CPU=$(F_CPU) -mmcu=$(MCU)
 
 all: main.hex
 
-main.elf: main.c
-	$(CC) $(CFLAGS) -o main.elf main.c
+main.elf: $(SRC)
+	$(CC) $(CFLAGS) -o main.elf $(SRC)
 
 # prevod zkompilovaneho programu do .hex formatu, kteremu rozumi procesor
 main.hex: main.elf

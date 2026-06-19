@@ -4,17 +4,20 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-int main(void) {
-    // nastaveni pinu PB5 jako vystupni (DDR = Data Direction Register)
-    DDRB |= (1 << DDB5);
+#include "uart.h"
 
-    while (1) {
-        // prepnuti stavu pinu PB5 (XOR operace nad Port Registrem)
-        PORTB ^= (1 << PORTB5);
-        
-        // cekani pul sekundy
-        _delay_ms(500);
+int main(void)
+{
+    uart_init();
+
+    while (1)
+    {
+        uart_transmit('H'); // posle jeden znak
+        uart_transmit('i');
+        uart_transmit('!');
+        uart_transmit('\n'); // posle znak pro novy radek
+
+        _delay_ms(500); // pocka pul sekundy
     }
-
-    return 0; // tento return se nikdy nedostane, ale je zde pro formální správnost
+    return 0;
 }
