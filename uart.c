@@ -13,6 +13,7 @@ void uart_init(void)
     // Zapnuti vysilace a prijimace
     UCSR0B |= (1 << TXEN0);
     UCSR0B |= (1 << RXEN0);
+    UCSR0B |= (1 << RXCIE0); // povoleni preruseni pro prijem dat
 
     // (pocet bitu a parity nechavame na vychozich 8-N-1)
 }

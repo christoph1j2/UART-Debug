@@ -2,22 +2,30 @@
 #define F_CPU 16000000UL
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <util/delay.h>
 
 #include "uart.h"
 
+volatile char received_char;
+
+ISR(USART_RX_vect)
+{
+    received_char = UDR0; // přečteme přijatý znak z bufferu
+}
+
 int main(void)
 {
     uart_init();
+    sei(); // Zapnutí hlavního jističe přerušení
 
     while (1)
     {
-        uart_transmit('H'); // posle jeden znak
-        uart_transmit('i');
-        uart_transmit('!');
-        uart_transmit('\n'); // posle znak pro novy radek
-
-        _delay_ms(500); // pocka pul sekundy
+        if (received_char != 0)
+        {
+            uart_transmit(received_char); // Odeslání přijatého znaku zpět
+            received_char = 0;            // Resetujeme proměnnou po odeslání
+        }
     }
     return 0;
 }
